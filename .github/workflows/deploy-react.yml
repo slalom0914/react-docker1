@@ -27,18 +27,6 @@ jobs:
             APP_DIR=/home/ubuntu/vite-react-app
             REPO_URL="https://github.com/slalom0914/react-docker1.git"
             DEV_PORT=5173
-
-            # 1)최초 1회 clone하고 이후부터는 pull하기
-            if [! -d "$APP_DIR/.git"]; then
-              sudo mkdir -p $APP_DIR
-              sudo chown -R $USER:$USER $APP_DIR
-              git clone $REPO_URL $APP_DIR
-            fi
-
-            cd $APP_DIR
-            git checkout main
-            git pull origin main
-            # 2)의존성 설치 -> package-lock.json기준
-            npm ci            
+         
 
 
