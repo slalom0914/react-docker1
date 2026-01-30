@@ -41,3 +41,15 @@ jobs:
             # 2)의존성 설치 -> package-lock.json기준
             npm ci    
 
+            # 3)기존 서버 종료(포트 기준으로 kill하기)
+            # 실행 중이 아니더라도 실패하지 않도록 true옵션 추가
+            sudo fuser -k -n tcp ${DEV_PORT} || true
+            
+            # 4)서버 백그라운드 기동
+            # --host 0.0.0.0 : 외부 접속 허용
+            # 로그는 dev.log파일로 저장
+            nohup npm run dev -- --host 0.0.0.0 --port ${DEV_PORT} > dev.log 2>&1 &
+            
+            # 5)기동 확인(로그/포트 체크)
+            sleep 2
+            sudo fuser -n tcp ${DEV_PORT} || (echo "server not running" && exit 1)
